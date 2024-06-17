@@ -7,7 +7,6 @@ export async function pixabayRequest(searchParams, container, more) {
   const jsLoader = new JsLoader();
   jsLoader.createInterval(jsLoader.options);
 
-  //   setTimeout(() => {
   //   await fetch(`https://pixabay.com/api/?${searchParams}`)
   //     .then(response => {
   //       if (!response.ok) {
@@ -39,7 +38,6 @@ export async function pixabayRequest(searchParams, container, more) {
   //       );
   //     })
   //     .finally(() => jsLoader.removeInterval(jsLoader.interval));
-  //   }, 2000);
 
   try {
     const response = await fetch(`https://pixabay.com/api/?${searchParams}`);
@@ -52,7 +50,7 @@ export async function pixabayRequest(searchParams, container, more) {
     await renderPhoto(photos, container, more);
 
     const firstItem = document.querySelector('.gallery li');
-    if (firstItem) {
+    if (more && firstItem) {
       const { height } = firstItem.getBoundingClientRect();
       window.scrollBy({ top: (height + 20) * 2, behavior: 'smooth' });
     }
