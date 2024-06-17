@@ -39,7 +39,7 @@ export function showError(type, text) {
   });
 }
 export async function renderPhotoList(photos, container) {
-  console.log(photos);
+  //   console.log(photos);
   const markup = photos.hits
     .map(photo => {
       return `<li>
@@ -58,7 +58,7 @@ export async function renderPhotoList(photos, container) {
   galleryItem.refresh();
 }
 export async function renderMore(photos, container) {
-  console.log(photos);
+  //   console.log(photos);
   const markup = photos.hits
     .map(photo => {
       return `<li>

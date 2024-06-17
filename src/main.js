@@ -15,8 +15,8 @@ let searchParams = new URLSearchParams({
   orientation: 'horizontal',
   safesearch: true,
   page: 1,
-  //   per_page: 15,
-  per_page: 50,
+  per_page: 15,
+  //   per_page: 50,
 });
 let REQUEST_PAGE = 1;
 serachForm.addEventListener('submit', e => {

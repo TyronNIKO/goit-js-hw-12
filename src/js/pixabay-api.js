@@ -1,11 +1,11 @@
 import { renderPhotoList, renderMore, showError } from './render-function';
 import JsLoader from './js-loader';
 
-export function pixabayRequestNew(searchParams, container) {
+export async function pixabayRequestNew(searchParams, container) {
   const jsLoader = new JsLoader();
   jsLoader.createInterval(jsLoader.options);
   //   setTimeout(() => {
-  fetch(`https://pixabay.com/api/?${searchParams}`)
+  await fetch(`https://pixabay.com/api/?${searchParams}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.status);
@@ -28,11 +28,11 @@ export function pixabayRequestNew(searchParams, container) {
     .finally(() => jsLoader.removeInterval(jsLoader.interval));
   //   }, 2000);
 }
-export function pixabayRequestMore(searchParams, container) {
+export async function pixabayRequestMore(searchParams, container) {
   const jsLoader = new JsLoader();
   jsLoader.createInterval(jsLoader.options);
   //   setTimeout(() => {
-  fetch(`https://pixabay.com/api/?${searchParams}`)
+  await fetch(`https://pixabay.com/api/?${searchParams}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.status);
@@ -46,9 +46,10 @@ export function pixabayRequestMore(searchParams, container) {
       renderMore(photos, container).then(() => {
         let rect = document.querySelector('.gallery li');
         rect = rect.getBoundingClientRect();
-        console.log(rect);
+        let gap = 20;
+        // console.log(rect, rect.height);
         window.scrollBy({
-          top: rect.height * 2,
+          top: (rect.height + gap) * 2,
           behavior: 'smooth',
         });
       });
