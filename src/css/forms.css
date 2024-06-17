@@ -1,0 +1,42 @@
+input,
+textarea,fieldset {
+    margin: 0;
+	padding: 8px 16px;
+	border: 1px solid #808080;
+	border-radius: 4px;
+	background-color: transparent;
+	color: #2e2f42;
+	outline: transparent;
+	font-size: 16px;
+	font-family: var(--font-family);
+	line-height: 1.5;
+	letter-spacing: 0.04em;
+	transition: border-color 250ms ease;
+}
+input::placeholder,
+textarea::placeholder {
+	color: #808080;
+}
+input:hover,
+textarea:hover {
+	border-color: #000000;
+}
+input:focus,
+textarea:focus {
+	border-color: #808080;
+}
+input:active,
+textarea:active {
+	border-color: #4E75FF;
+}
+input[disabled],input[disabled]:focus,input[disabled]:active {
+    border-color: #808080;
+	background-color: #FAFAFA;
+	color: #808080;
+	cursor: not-allowed !important;
+}
+label {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}

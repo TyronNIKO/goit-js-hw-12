@@ -1,0 +1,23 @@
+.request-picture {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 370px;
+    margin: 0 auto 32px auto;
+}
+.request-picture input {
+    width: 100%;
+}
+.request-picture button.btn {
+    width: 100%;
+}
+
+@media screen and (min-width:768px){
+    .request-picture {
+        flex-direction: row;
+    }
+
+    .request-picture button.btn {
+        width: inherit;
+    }
+}

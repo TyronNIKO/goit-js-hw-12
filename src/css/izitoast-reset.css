@@ -1,0 +1,52 @@
+.iziToast {
+	border-radius: 4px !important;
+	font-family: var(--font-family) !important;
+
+}
+.iziToast > .iziToast-body .iziToast-message,
+.iziToast > .iziToast-body .iziToast-title {
+
+    color: #fff !important;
+
+	font-size: 16px !important;
+	line-height: 1.5 !important;
+	letter-spacing: 0.03em !important;
+}
+.iziToast > .iziToast-body .iziToast-title {
+    font-weight: 700 !important;
+}
+
+.iziToast.iziToast-color-green {
+    border-color: #B5EA7C !important;
+    background-color: #59A10D !important;
+}
+.iziToast.iziToast-color-green .iziToast-progressbar>div {
+    background-color: #326101 !important;
+}
+.iziToast.iziToast-color-red {
+	border-color: #ffbebe !important;
+	background-color: #ef4040 !important;
+}
+.iziToast.iziToast-color-red .iziToast-progressbar>div {
+    background-color: #B51B1B !important;
+}
+.iziToast.iziToast-color-blue {
+	border-color: #B8E3FF !important;
+	background-color: #0099FF !important;
+}
+.iziToast.iziToast-color-blue .iziToast-progressbar>div {
+    background-color: #0071BD !important;
+}
+
+.iziToast>.iziToast-close {
+    background: none !important; /* Видалити фоновий колір */
+    cursor: pointer !important; /* Додати курсор вказівника */
+}
+.iziToast>.iziToast-close::before {
+    content: '' !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: url('/img/icons/close.svg') no-repeat center center !important;
+    background-size: 16px !important;
+}

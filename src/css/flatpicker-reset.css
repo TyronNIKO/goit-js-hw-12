@@ -1,0 +1,29 @@
+.flatpickr-calendar {
+    padding: 16px !important;
+    background-color: #F5F5F5 !important;
+    font-size: 16px !important;
+}
+.flatpickr-current-month {
+    left: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    color: #333333 !important;
+    /* font-weight: 600 !important; */
+    font-size: 100% !important;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    padding: 0 !important;
+    font-weight: 600 !important;
+}
+.flatpickr-current-month input.cur-year {
+    font-weight: 600 !important;
+}
+.flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+    padding: 16px !important;
+}
+.flatpickr-time input {
+    font-size: 16px !important;
+}
+.flatpickr-time input.flatpickr-minute, .flatpickr-time input.flatpickr-second {
+    font-weight: 600 !important;
+}

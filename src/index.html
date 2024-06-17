@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link type="image/svg+xml" href="/favicon.svg" rel="icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Homework 11</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css" rel="stylesheet" integrity="sha512-4xo8blKMVCiXpTaLzQSLSw3KFOVPWhm/TRtuPVc4WG6kUgjH6J03IBuG7JZPkcWMxJ5huwaBpOpnwYElP/m6wg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="./css/styles.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <section>
+        <div class="container">
+            <form class="request-picture">
+                <input type="text" name="request" placeholder="Search images...">
+                <button class="btn btn-blue" type="submit">Search</button>
+            </form>
+            <span class="js-loader-text center">Loading images, please wait...</span>
+            <ul class="photo-list gallery"></ul>
+        </div>
+    </section>
+
+    <script src="./main.js" type="module"></script>
+  </body>
+</html>
