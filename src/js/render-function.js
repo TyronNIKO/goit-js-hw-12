@@ -13,66 +13,32 @@ const icons = {
 const galleryItem = new SimpleLightbox('.gallery li a');
 
 export function showError(type, text) {
-  let color, maxWidth;
+  const colors = { error: 'red', info: 'blue', success: 'green' };
+  const color = colors[type.toLowerCase()];
 
-  switch (type.toLowerCase()) {
-    case 'error':
-      color = 'red';
-      break;
-    case 'info':
-      color = 'blue';
-      break;
-    case 'success':
-      color = 'green';
-      break;
-    default:
-      break;
-  }
-  window.innerWidth < 768 ? (maxWidth = '100%') : (maxWidth = '33%');
   iziToast.show({
     title: `${type}`,
     color: color,
-    maxWidth: maxWidth,
+    maxWidth: window.innerWidth < 768 ? '100%' : '33%',
     iconUrl: icons[type.toLowerCase()],
     position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
     message: `${text}`,
   });
 }
-export async function renderPhotoList(photos, container) {
-  //   console.log(photos);
-  const markup = photos.hits
-    .map(photo => {
-      return `<li>
-                <a href="${photo.largeImageURL}"><img src='${photo.webformatURL}' alt='${photo.tags}'></a>
+function createItem(obj) {
+  return `<li>
+                <a href="${obj.largeImageURL}"><img src='${obj.webformatURL}' alt='${obj.tags}'></a>
                 <div class="content">
-                    <div class="item"><h3>Likes</h3><p>${photo.likes}</p></div>
-                    <div class="item"><h3>Views</h3><p>${photo.views}</p></div>
-                    <div class="item"><h3>Comments</h3><p>${photo.comments}</p></div>
-                    <div class="item"><h3>Downloads</h3><p>${photo.downloads}</p></div>
+                    <div class="item"><h3>Likes</h3><p>${obj.likes}</p></div>
+                    <div class="item"><h3>Views</h3><p>${obj.views}</p></div>
+                    <div class="item"><h3>Comments</h3><p>${obj.comments}</p></div>
+                    <div class="item"><h3>Downloads</h3><p>${obj.downloads}</p></div>
                 </div>
             </li>`;
-    })
-    .join('');
-  container.textContent = '';
-  container.insertAdjacentHTML('beforeend', markup);
-  galleryItem.refresh();
 }
-export async function renderMore(photos, container) {
-  //   console.log(photos);
-  const markup = photos.hits
-    .map(photo => {
-      return `<li>
-                  <a href="${photo.largeImageURL}"><img src='${photo.webformatURL}' alt='${photo.tags}'></a>
-                  <div class="content">
-                      <div class="item"><h3>Likes</h3><p>${photo.likes}</p></div>
-                      <div class="item"><h3>Views</h3><p>${photo.views}</p></div>
-                      <div class="item"><h3>Comments</h3><p>${photo.comments}</p></div>
-                      <div class="item"><h3>Downloads</h3><p>${photo.downloads}</p></div>
-                  </div>
-              </li>`;
-    })
-    .join('');
-  // container.textContent = '';
+export async function renderPhoto(photos, container, more) {
+  const markup = photos.hits.map(photo => createItem(photo)).join('');
+  if (!more) container.textContent = '';
   container.insertAdjacentHTML('beforeend', markup);
   galleryItem.refresh();
 }

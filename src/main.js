@@ -1,10 +1,13 @@
-import { pixabayRequestNew, pixabayRequestMore } from './js/pixabay-api';
+import { pixabayRequest } from './js/pixabay-api';
 import { showError } from './js/render-function';
 import JsLoader from './js/js-loader';
 
-const serachForm = document.querySelector('form');
-const photoList = document.querySelector('.photo-list');
-const loadMore = document.querySelector('button[data-request="load-more"]');
+const REFS = {
+  searchForm: document.querySelector('form'),
+  photoList: document.querySelector('.photo-list'),
+  loadMore: document.querySelector('button[data-request="load-more"]'),
+};
+
 const jsLoader = new JsLoader();
 jsLoader.init();
 
@@ -19,19 +22,25 @@ let searchParams = new URLSearchParams({
   //   per_page: 50,
 });
 let REQUEST_PAGE = 1;
-serachForm.addEventListener('submit', e => {
+REFS.searchForm.addEventListener('submit', e => {
   e.preventDefault();
-  const inputValue = serachForm.elements[0].value.trim();
+  const inputValue = REFS.searchForm.elements[0].value.trim();
   if (!inputValue) {
     showError('Info', 'Search input must be filled!');
     return;
   }
   searchParams.set('q', inputValue);
-  pixabayRequestNew(searchParams, photoList);
+  REQUEST_PAGE = 1;
+  pixabayRequest(searchParams, REFS.photoList, false).then(() => {
+    REFS.loadMore.classList.remove('js-hidden');
+  });
 });
-loadMore.addEventListener('click', e => {
+
+REFS.loadMore.addEventListener('click', e => {
   e.preventDefault();
-  searchParams.set('page', REQUEST_PAGE);
-  REQUEST_PAGE++;
-  pixabayRequestMore(searchParams, photoList);
+  REFS.loadMore.classList.add('js-hidden');
+  searchParams.set('page', ++REQUEST_PAGE);
+  pixabayRequest(searchParams, REFS.photoList, true).then(() => {
+    REFS.loadMore.classList.remove('js-hidden');
+  });
 });

@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <link type="image/svg+xml" href="/favicon.svg" rel="icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS Homework 12</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css" rel="stylesheet" integrity="sha512-4xo8blKMVCiXpTaLzQSLSw3KFOVPWhm/TRtuPVc4WG6kUgjH6J03IBuG7JZPkcWMxJ5huwaBpOpnwYElP/m6wg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="./css/styles.css" rel="stylesheet">
-  </head>
-  <body>
+</head>
 
+<body>
     <section>
         <div class="container">
             <form class="request-picture">
-                <input type="text" name="request" placeholder="Search images...">
+                <input name="request" type="text" placeholder="Search images...">
                 <button class="btn btn-blue" data-request="search" type="submit">Search</button>
             </form>
-            <ul class="photo-list gallery"></ul>
+            <ul class="photo-list gallery mb-32"></ul>
             <span class="js-loader-text center">Loading images, please wait...</span>
-            <button type="button" data-request="load-more" class="btn btn-blue mx-auto mt-32">Load more</button>
+            <button class="btn btn-blue mx-auto js-hidden" data-request="load-more" type="button">Load more</button>
         </div>
     </section>
-
     <script src="./main.js" type="module"></script>
-  </body>
+</body>
+
 </html>
