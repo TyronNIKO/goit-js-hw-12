@@ -39,3 +39,8 @@ section {
     max-width: 1128px;
   }
 }
+.mx-auto {
+    margin-right: auto;
+    margin-left: auto;
+}
+.mt-32{ margin-top: 32px;}
