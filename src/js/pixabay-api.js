@@ -3,7 +3,12 @@ import { renderPhoto, showError } from './render-function';
 import JsLoader from './js-loader';
 
 // export async function pixabayRequestNew(searchParams, container) {
-export async function pixabayRequest(searchParams, container, more) {
+export async function pixabayRequest(
+  searchParams,
+  container,
+  more = false,
+  limit = null
+) {
   //   console.log(more);
   const jsLoader = new JsLoader();
   jsLoader.createInterval(jsLoader.options);
@@ -70,6 +75,11 @@ export async function pixabayRequest(searchParams, container, more) {
       `https://pixabay.com/api/?${searchParams}`
     );
     const photos = response.data;
+    if (limit) {
+      console.log(photos.totalHits, limit);
+      console.log(Math.ceil(photos.totalHits / limit.curPage));
+      console.log(limit.page > Math.ceil(photos.totalHits / limit.curPage));
+    }
 
     if (!photos.hits || photos.hits.length === 0)
       throw new Error('Error! Nothing to load');
@@ -80,6 +90,9 @@ export async function pixabayRequest(searchParams, container, more) {
     if (more && firstItem) {
       const { height } = firstItem.getBoundingClientRect();
       window.scrollBy({ top: (height + 20) * 2, behavior: 'smooth' });
+    }
+    if (photos.totalHits % limit <= 0) {
+      throw new Error('Error! Nothing to load');
     }
   } catch (error) {
     showError(

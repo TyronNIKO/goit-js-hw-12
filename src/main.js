@@ -18,10 +18,11 @@ let searchParams = new URLSearchParams({
   orientation: 'horizontal',
   safesearch: true,
   page: 1,
-  per_page: 15,
-  //   per_page: 50,
+  //   per_page: 15,
+  per_page: 50,
 });
 let REQUEST_PAGE = 1;
+let LIMIT;
 REFS.searchForm.addEventListener('submit', e => {
   e.preventDefault();
   const inputValue = REFS.searchForm.elements[0].value.trim();
@@ -40,7 +41,12 @@ REFS.loadMore.addEventListener('click', e => {
   e.preventDefault();
   REFS.loadMore.classList.add('js-hidden');
   searchParams.set('page', ++REQUEST_PAGE);
-  pixabayRequest(searchParams, REFS.photoList, true).then(() => {
+  //   LIMIT = REQUEST_PAGE * searchParams.get('per_page');
+  LIMIT.page = REQUEST_PAGE;
+  LIMIT.perPage = searchParams.get('per_page');
+  pixabayRequest(searchParams, REFS.photoList, true, LIMIT).then(() => {
     REFS.loadMore.classList.remove('js-hidden');
   });
+  console.log(REQUEST_PAGE, searchParams.get('per_page'));
+  console.log(REQUEST_PAGE * searchParams.get('per_page'));
 });
