@@ -32,9 +32,12 @@ REFS.searchForm.addEventListener('submit', e => {
   }
   searchParams.set('q', inputValue);
   REQUEST_PAGE = 1;
-  pixabayRequest(searchParams, REFS.photoList, false).then(() => {
+  try {
+    pixabayRequest(searchParams, REFS.photoList, false);
     REFS.loadMore.classList.remove('js-hidden');
-  });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 REFS.loadMore.addEventListener('click', e => {
@@ -44,9 +47,10 @@ REFS.loadMore.addEventListener('click', e => {
   //   LIMIT = REQUEST_PAGE * searchParams.get('per_page');
   LIMIT.page = REQUEST_PAGE;
   LIMIT.perPage = searchParams.get('per_page');
-  pixabayRequest(searchParams, REFS.photoList, true, LIMIT).then(() => {
+  try {
+    pixabayRequest(searchParams, REFS.photoList, true, LIMIT);
     REFS.loadMore.classList.remove('js-hidden');
-  });
-  console.log(REQUEST_PAGE, searchParams.get('per_page'));
-  console.log(REQUEST_PAGE * searchParams.get('per_page'));
+    console.log(REQUEST_PAGE, searchParams.get('per_page'));
+    console.log(REQUEST_PAGE * searchParams.get('per_page'));
+  } catch (error) {}
 });
