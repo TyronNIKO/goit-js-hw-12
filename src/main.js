@@ -1,5 +1,5 @@
 import { pixabayRequest } from './js/pixabay-api';
-import { showError } from './js/render-function';
+import { renderPhoto, showError } from './js/render-function';
 import JsLoader from './js/js-loader';
 
 const REFS = {
@@ -21,9 +21,9 @@ let searchParams = new URLSearchParams({
   //   per_page: 15,
   per_page: 50,
 });
-let REQUEST_PAGE = 1;
-let LIMIT;
-REFS.searchForm.addEventListener('submit', e => {
+let OPTIONS = {};
+OPTIONS.request_page = 1;
+REFS.searchForm.addEventListener('submit', async e => {
   e.preventDefault();
   const inputValue = REFS.searchForm.elements[0].value.trim();
   if (!inputValue) {
@@ -31,26 +31,48 @@ REFS.searchForm.addEventListener('submit', e => {
     return;
   }
   searchParams.set('q', inputValue);
-  REQUEST_PAGE = 1;
+  OPTIONS.request_page = 1;
   try {
-    pixabayRequest(searchParams, REFS.photoList, false);
+    jsLoader.createInterval(jsLoader.options);
+    const data = await pixabayRequest(searchParams);
+    if (!data.hits || data.hits.length === 0)
+      throw new Error('Error! Nothing to load');
+    await renderPhoto(data.hits, REFS.photoList, false);
+    jsLoader.removeInterval(jsLoader.interval);
     REFS.loadMore.classList.remove('js-hidden');
   } catch (error) {
-    console.log(error);
+    showError(
+      'Error',
+      "We're sorry, but you've reached the end of search results."
+    );
   }
 });
-
-REFS.loadMore.addEventListener('click', e => {
+REFS.loadMore.addEventListener('click', async e => {
   e.preventDefault();
   REFS.loadMore.classList.add('js-hidden');
-  searchParams.set('page', ++REQUEST_PAGE);
-  //   LIMIT = REQUEST_PAGE * searchParams.get('per_page');
-  LIMIT.page = REQUEST_PAGE;
-  LIMIT.perPage = searchParams.get('per_page');
+  searchParams.set('page', ++OPTIONS.request_page);
+  OPTIONS.perPage = searchParams.get('per_page');
   try {
-    pixabayRequest(searchParams, REFS.photoList, true, LIMIT);
+    const data = await pixabayRequest(searchParams);
+    if (!data.hits || data.hits.length === 0)
+      throw new Error('Error! Nothing to load');
+    await renderPhoto(data.hits, REFS.photoList, true);
+    const firstItem = document.querySelector('.gallery li');
+    if (firstItem) {
+      const { height } = firstItem.getBoundingClientRect();
+      window.scrollBy({ top: (height + 20) * 2, behavior: 'smooth' });
+    }
+    OPTIONS.limit = Math.ceil(data.totalHits / OPTIONS.perPage);
+    if (OPTIONS.limit < OPTIONS.request_page) {
+      REFS.loadMore.classList.add('js-hidden');
+      throw new Error('Error! Nothing to load');
+    }
+    jsLoader.removeInterval(jsLoader.interval);
     REFS.loadMore.classList.remove('js-hidden');
-    console.log(REQUEST_PAGE, searchParams.get('per_page'));
-    console.log(REQUEST_PAGE * searchParams.get('per_page'));
-  } catch (error) {}
+  } catch (error) {
+    showError(
+      'Error',
+      'Sorry, there are no images matching your search query. Please try again!'
+    );
+  }
 });

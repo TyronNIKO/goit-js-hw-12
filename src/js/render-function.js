@@ -27,17 +27,17 @@ export function showError(type, text) {
 }
 function createItem(obj) {
   return `<li>
-                <a href="${obj.largeImageURL}"><img src='${obj.webformatURL}' alt='${obj.tags}'></a>
-                <div class="content">
-                    <div class="item"><h3>Likes</h3><p>${obj.likes}</p></div>
-                    <div class="item"><h3>Views</h3><p>${obj.views}</p></div>
-                    <div class="item"><h3>Comments</h3><p>${obj.comments}</p></div>
-                    <div class="item"><h3>Downloads</h3><p>${obj.downloads}</p></div>
-                </div>
-            </li>`;
+            <a href="${obj.largeImageURL}"><img src='${obj.webformatURL}' alt='${obj.tags}'></a>
+            <div class="content">
+                <div class="item"><h3>Likes</h3><p>${obj.likes}</p></div>
+                <div class="item"><h3>Views</h3><p>${obj.views}</p></div>
+                <div class="item"><h3>Comments</h3><p>${obj.comments}</p></div>
+                <div class="item"><h3>Downloads</h3><p>${obj.downloads}</p></div>
+            </div>
+        </li>`;
 }
 export async function renderPhoto(photos, container, more) {
-  const markup = photos.hits.map(photo => createItem(photo)).join('');
+  const markup = photos.map(photo => createItem(photo)).join('');
   if (!more) container.textContent = '';
   container.insertAdjacentHTML('beforeend', markup);
   galleryItem.refresh();
