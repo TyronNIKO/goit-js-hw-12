@@ -8,7 +8,7 @@ export default class JsLoader {
     };
   }
 
-  createInterval({ count, text, loader }) {
+  init({ count, text, loader }) {
     // console.log('New interval');
     // console.log(this);
     this.element.classList.remove('js-hidden');
@@ -19,7 +19,7 @@ export default class JsLoader {
       acc++;
     }, 200);
   }
-  removeInterval(id) {
+  remove(id) {
     // console.log('Interval cleared', id);
     clearInterval(id);
     this.element.classList.add('js-hidden');
