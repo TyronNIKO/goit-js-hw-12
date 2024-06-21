@@ -35,7 +35,7 @@ function scrollItems() {
 }
 REFS.form.addEventListener('submit', async e => {
   e.preventDefault();
-  console.log(OPTIONS);
+  //   console.log(OPTIONS);
 
   const inputValue = REFS.form.elements[0].value.trim();
   if (!inputValue) {
@@ -65,7 +65,7 @@ REFS.form.addEventListener('submit', async e => {
 });
 REFS.loadMore.addEventListener('click', async e => {
   e.preventDefault();
-  console.log(OPTIONS);
+  //   console.log(OPTIONS);
   REFS.loadMore.classList.add('js-hidden');
   searchParams.set('page', ++OPTIONS.request_page);
   OPTIONS.perPage = searchParams.get('per_page');
