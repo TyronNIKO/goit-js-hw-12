@@ -36,9 +36,9 @@ function createItem(obj) {
             </div>
         </li>`;
 }
-export async function renderPhoto(photos, container, more) {
+export function renderPhoto(photos, container, more) {
   const markup = photos.map(photo => createItem(photo)).join('');
-  if (!more) container.textContent = '';
+  if (!more) container.innerHTML = '';
   container.insertAdjacentHTML('beforeend', markup);
   galleryItem.refresh();
 }

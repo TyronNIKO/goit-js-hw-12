@@ -7,24 +7,23 @@ export default class JsLoader {
       count: 3,
     };
   }
-
-  init({ count, text, loader }) {
+  show() {
     // console.log('New interval');
     // console.log(this);
     this.element.classList.remove('js-hidden');
     let acc = 0;
     this.interval = setInterval(() => {
-      if (acc > count) acc = 0;
-      this.element.innerText = text.padEnd(text.length + acc, loader);
+      if (acc > this.options.count) acc = 0;
+      this.element.innerText = this.options.text.padEnd(
+        this.options.text.length + acc,
+        this.options.loader
+      );
       acc++;
     }, 200);
   }
-  remove(id) {
+  remove() {
     // console.log('Interval cleared', id);
-    clearInterval(id);
-    this.element.classList.add('js-hidden');
-  }
-  init() {
+    clearInterval(this.interval);
     this.element.classList.add('js-hidden');
   }
 }

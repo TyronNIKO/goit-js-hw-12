@@ -9,7 +9,6 @@ const REFS = {
 };
 
 const jsLoader = new JsLoader();
-jsLoader.init();
 
 let searchParams = new URLSearchParams({
   key: '7706316-da1567048322714709989c4f8',
@@ -18,14 +17,24 @@ let searchParams = new URLSearchParams({
   safesearch: true,
   page: 1,
   per_page: 15,
-  //   per_page: 50,
 });
 let OPTIONS = {};
 OPTIONS.request_page = 1;
-function validatePageLimit() {
-  OPTIONS.limit = Math.ceil(data.totalHits / OPTIONS.perPage);
-  return OPTIONS.limit < OPTIONS.request_page;
-}
+OPTIONS.perPage = searchParams.get('per_page');
+const validateData = {
+  pageLimit(data) {
+    OPTIONS.limit = Math.ceil(data.totalHits / OPTIONS.perPage);
+    console.log(OPTIONS);
+    const result = OPTIONS.request_page >= OPTIONS.limit;
+    console.log(this, result);
+    return result;
+  },
+  hits(data) {
+    const result = !data.hits || data.hits.length == 0;
+    console.log(this, result);
+    return result;
+  },
+};
 function scrollItems() {
   const firstItem = document.querySelector('.gallery li');
   if (firstItem) {
@@ -33,9 +42,18 @@ function scrollItems() {
     window.scrollBy({ top: (height + 20) * 2, behavior: 'smooth' });
   }
 }
+const LoadMore = {
+  show() {
+    REFS.loadMore.classList.remove('js-hidden');
+  },
+  hide() {
+    REFS.loadMore.classList.add('js-hidden');
+  },
+};
+//SUBMIT or FIRST SEARCH
 REFS.form.addEventListener('submit', async e => {
   e.preventDefault();
-  //   console.log(OPTIONS);
+  OPTIONS.request_page = 1;
 
   const inputValue = REFS.form.elements[0].value.trim();
   if (!inputValue) {
@@ -43,47 +61,58 @@ REFS.form.addEventListener('submit', async e => {
     return;
   }
   searchParams.set('q', inputValue);
-  OPTIONS.request_page = 1;
+
+  jsLoader.show();
   try {
-    jsLoader.init(jsLoader.options);
     const data = await pixabayRequest(searchParams);
-    if (!data.hits || data.hits.length === 0)
-      throw new Error('Error! Nothing to load');
-    await renderPhoto(data.hits, REFS.gallery, false);
-    if (validatePageLimit()) {
-      REFS.loadMore.classList.add('js-hidden');
-      throw new Error('Error! Nothing to load');
+    console.log(data);
+
+    if (validateData.hits(data)) {
+      jsLoader.remove();
+      throw new Error('Error! No data privided');
     }
-    jsLoader.remove(jsLoader.interval);
-    REFS.loadMore.classList.remove('js-hidden');
+
+    renderPhoto(data.hits, REFS.gallery, false);
+
+    if (validateData.pageLimit(data)) {
+      LoadMore.hide();
+      jsLoader.remove();
+      throw new Error('Error! No more pages');
+    } else {
+      LoadMore.show();
+      jsLoader.remove();
+    }
   } catch (error) {
+    console.log(error);
     showError(
       'Error',
       "We're sorry, but you've reached the end of search results."
     );
   }
 });
+//CLICK or LOAD MORE
 REFS.loadMore.addEventListener('click', async e => {
   e.preventDefault();
-  //   console.log(OPTIONS);
-  REFS.loadMore.classList.add('js-hidden');
+  LoadMore.hide();
   searchParams.set('page', ++OPTIONS.request_page);
   OPTIONS.perPage = searchParams.get('per_page');
   try {
     const data = await pixabayRequest(searchParams);
-    if (!data.hits || data.hits.length === 0)
-      throw new Error('Error! Nothing to load');
-    await renderPhoto(data.hits, REFS.gallery, true);
+    if (validateData.hits(data)) throw new Error('Error! Nothing to load');
 
+    renderPhoto(data.hits, REFS.gallery, true);
     scrollItems();
 
-    if (validatePageLimit()) {
-      REFS.loadMore.classList.add('js-hidden');
+    if (validateData.pageLimit(data)) {
+      jsLoader.remove();
+      LoadMore.hide();
       throw new Error('Error! Nothing to load');
+    } else {
+      jsLoader.remove();
+      LoadMore.show();
     }
-    jsLoader.removeInterval(jsLoader.interval);
-    REFS.loadMore.classList.remove('js-hidden');
   } catch (error) {
+    console.log(error);
     showError(
       'Error',
       'Sorry, there are no images matching your search query. Please try again!'
